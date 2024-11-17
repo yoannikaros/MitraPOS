@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mitrapos/component/navigation.dart';
 import 'package:mitrapos/view/HomePage/HomePage.dart';
 
 void main() {
@@ -11,8 +12,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
-        '/' : (context) => Homepage()
+        '/' : (context) => MainPage()
       },
     );
   }
