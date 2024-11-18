@@ -68,69 +68,132 @@ class _HomepageState extends State<Homepage> {
                   color: Colors.redAccent,
                   borderRadius: BorderRadius.circular(5)),
             ),
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Container(
               height: 40,
               padding: EdgeInsets.all(10),
               child: Text(
                 'Makanan dan Minuman',
                 style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               decoration: BoxDecoration(
                   color: Colors.redAccent,
                   borderRadius: BorderRadius.circular(5)),
             ),
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Container(
               height: 40,
               padding: EdgeInsets.all(10),
               child: Text(
                 'Makanan dan Minuman',
                 style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
-            ),            SizedBox(width: 10,),
-            Container(
-              height: 40,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Makanan dan Minuman',
-                style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
-            ),            SizedBox(width: 10,),
-            Container(
-              height: 40,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Makanan dan Minuman',
-                style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
-            ),            SizedBox(width: 10,),
-            Container(
-              height: 40,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Makanan dan Minuman',
-                style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               decoration: BoxDecoration(
                   color: Colors.redAccent,
                   borderRadius: BorderRadius.circular(5)),
             ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              height: 40,
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'Makanan dan Minuman',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              height: 40,
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'Makanan dan Minuman',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              height: 40,
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'Makanan dan Minuman',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+          ],
+        ),
+      );
+    }
 
+    Widget Cart() {
+      return Container(
+        padding: EdgeInsets.all(7), // Menambahkan padding agar lebih rapi
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start, // Agar item di-align dengan benar
+          children: [
+            Container(
+              height: 60,
+              width: 60,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            Expanded( // Gunakan Expanded agar elemen lain mengambil ruang tersisa
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Nasi Goreng Ayam Telor',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 1), // Jarak antar teks
+                  Text(
+                    'Pedas Gila',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  SizedBox(height: 1), // Jarak antar baris
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Spasi antar elemen
+                    children: [
+                      Text(
+                        '1x',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      Text(
+                        'Rp. 300.000',
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                  
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       );
@@ -152,20 +215,25 @@ class _HomepageState extends State<Homepage> {
                     height: 120,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(10)
-                    ),
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(12)),
                   ),
-                  SizedBox(height: 12,),
-                  Text('Nasi Goreng ayam',style: TextStyle(fontWeight: FontWeight.bold),),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Nasi Goreng ayam',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Text('Rp. 5000')
                 ],
               ),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(12)),
             ),
-
           ],
         ),
       );
@@ -183,15 +251,19 @@ class _HomepageState extends State<Homepage> {
                 children: [
                   // Grid kiri lebih lebar
                   Expanded(
-                    flex: 3,
+                    flex: 6,
                     child: Container(
                       margin:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [header(),SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Category()), Content()],
+                        children: [
+                          header(),
+                          SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Category()),
+                          Content()
+                        ],
                       ),
                     ),
                   ),
@@ -199,8 +271,11 @@ class _HomepageState extends State<Homepage> {
                   Expanded(
                     flex: 2,
                     child: Container(
+                      padding: EdgeInsets.only(top: 50, left: 10, bottom: 5),
                       color: Colors.white, // Mengisi penuh ruang flex 2
-                      child: Center(child: Text("Grid Kanan")),
+                      child: Column(
+                        children: [Cart(),Cart(),Cart(),Cart()],
+                      ),
                     ),
                   ),
                 ],
