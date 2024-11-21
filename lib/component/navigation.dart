@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
                 decoration: BoxDecoration(
-                  color: currentIndex == 0 ? Colors.redAccent : Colors.white,
+                  color: currentIndex == 0 ? Colors.blue : Colors.white,
                   borderRadius: BorderRadius.circular(10)
                 ),
               ),
@@ -63,7 +63,7 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
                 decoration: BoxDecoration(
-                    color: currentIndex == 1 ? Colors.redAccent : Colors.white,
+                    color: currentIndex == 1 ? Colors.blue : Colors.white,
                     borderRadius: BorderRadius.circular(10)
                 ),
               ),
@@ -87,7 +87,7 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
                 decoration: BoxDecoration(
-                    color: currentIndex == 2 ? Colors.redAccent : Colors.white,
+                    color: currentIndex == 2 ? Colors.blue : Colors.white,
                     borderRadius: BorderRadius.circular(10)
                 ),
               ),

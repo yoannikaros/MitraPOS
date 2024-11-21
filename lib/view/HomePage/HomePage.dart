@@ -65,8 +65,7 @@ class _HomepageState extends State<Homepage> {
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
+                  color: Colors.blue, borderRadius: BorderRadius.circular(5)),
             ),
             SizedBox(
               width: 10,
@@ -75,120 +74,132 @@ class _HomepageState extends State<Homepage> {
               height: 40,
               padding: EdgeInsets.all(10),
               child: Text(
-                'Makanan dan Minuman',
+                'Food',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-              height: 40,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Makanan dan Minuman',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-              height: 40,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Makanan dan Minuman',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-              height: 40,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Makanan dan Minuman',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-              height: 40,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Makanan dan Minuman',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5)),
+                  color: Colors.blue, borderRadius: BorderRadius.circular(5)),
             ),
           ],
         ),
       );
     }
 
+    Widget Content() {
+      return Expanded(
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4, // Jumlah kolom dalam grid
+            crossAxisSpacing: 5, // Jarak horizontal antar item
+            mainAxisSpacing: 2, // Jarak vertikal antar item
+            childAspectRatio:
+                0.90, // Lebar dan tinggi (lebih tinggi dari sebelumnya)
+          ),
+          itemCount: 1, // Jumlah item total (sesuaikan dengan data Anda)
+          itemBuilder: (context, index) {
+            return Container(
+              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: 140,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'Nasi Goreng Ayam $index',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Rp. 5.000.000',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                        fontSize: 15),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
+
     Widget Cart() {
       return Container(
-        padding: EdgeInsets.all(7), // Menambahkan padding agar lebih rapi
+        padding: EdgeInsets.all(10), // Menambahkan padding agar lebih rapi
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start, // Agar item di-align dengan benar
+          crossAxisAlignment:
+              CrossAxisAlignment.start, // Agar item di-align dengan benar
           children: [
             Container(
-              height: 60,
-              width: 60,
+              height: 55,
+              width: 55,
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.redAccent,
+                color: Colors.blue,
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            Expanded( // Gunakan Expanded agar elemen lain mengambil ruang tersisa
+            Expanded(
+              // Gunakan Expanded agar elemen lain mengambil ruang tersisa
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Nasi Goreng Ayam Telor',
+                    'Nasi Goreng Ayam Telor ',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 1), // Jarak antar teks
                   Text(
-                    'Pedas Gila',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    '12x',
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.normal,color: Colors.grey),
                   ),
-                  SizedBox(height: 1), // Jarak antar baris
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Spasi antar elemen
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Menyelaraskan elemen ke atas
                     children: [
-                      Text(
-                        '1x',
-                        style: TextStyle(fontSize: 12),
+                      // Deskripsi
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Pedas Manis',
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.normal,color: Colors.grey),
+                          maxLines: 2, // Membatasi hingga 2 baris
+                          overflow: TextOverflow
+                              .ellipsis, // Memotong jika terlalu panjang
+                        ),
                       ),
-                      Text(
-                        'Rp. 300.000',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      SizedBox(
+                          width:
+                              10), // Memberikan jarak antara deskripsi dan harga
+                      // Harga
+                      Container(
+                        width: 100, // Ukuran tetap untuk harga
+                        alignment:
+                            Alignment.centerRight, // Sejajarkan teks ke kanan
+                        child: Text(
+                          '15.000.000',
+                          textAlign: TextAlign.right, // Agar teks sejajar kanan
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent),
+                        ),
                       ),
-                  
                     ],
                   ),
                 ],
@@ -199,43 +210,82 @@ class _HomepageState extends State<Homepage> {
       );
     }
 
-
-    Widget Content() {
+    Widget totalCart() {
       return Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: EdgeInsets.symmetric(horizontal: 20),
+        width: double.infinity,
+        padding: EdgeInsets.all(15),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 200,
-              width: 150,
-              child: Column(
-                children: [
-                  Container(
-                    height: 120,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.redAccent,
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    'Nasi Goreng ayam',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text('Rp. 5000')
-                ],
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            Text(
+              'Payment Summary',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Subtotal',
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: 14),
+                ),
+                Spacer(),
+                Text(
+                  'Rp. 200.000',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Tax',
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: 14),
+                ),
+                Spacer(),
+                Text(
+                  '0',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(20, (index) {
+                return index % 2 == 0
+                    ? Container(width: 18, height: 1, color: Colors.black.withOpacity(0.2))
+                    : SizedBox(width: 3);
+              }),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Total',
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: 16),
+                ),
+                Spacer(),
+                Text(
+                  'Rp. 200.000',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                )
+              ],
             ),
           ],
         ),
+        decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12)),
       );
     }
 
@@ -271,10 +321,52 @@ class _HomepageState extends State<Homepage> {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      padding: EdgeInsets.only(top: 50, left: 10, bottom: 5),
-                      color: Colors.white, // Mengisi penuh ruang flex 2
+                      padding: EdgeInsets.only(
+                          top: 50, left: 10, bottom: 5, right: 10),
+                      color: Colors.white,
                       child: Column(
-                        children: [Cart(),Cart(),Cart(),Cart()],
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Cart(),
+                                  Cart(),
+                                  Cart(),
+                                  Cart(),                                  Cart(),
+                                  Cart(),
+                                  Cart(),
+                                  Cart(),
+                                ],
+                              ), // Konten Cart bisa di-scroll jika melebihi batas
+                            ),
+                          ),
+                          SizedBox(
+                              height:
+                                  10), // Tambahkan spasi kecil untuk memisahkan dari totalCart
+                          Column(
+                            children: [
+                              totalCart(),
+                              Container(
+                                height: 40,
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Center(
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Colors.blueAccent,
+                                    borderRadius: BorderRadius.circular(12)),
+                              )
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
