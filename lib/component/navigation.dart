@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mitrapos/view/HomePage/HomePage.dart';
+import 'package:mitrapos/view/TableView/tableViewPage.dart';
+import 'package:mitrapos/view/cashier/cashierPage.dart';
 import '../shared/theme.dart';
 
 class MainPage extends StatefulWidget {
@@ -102,13 +103,13 @@ class _MainPageState extends State<MainPage> {
     Widget body() {
       switch (currentIndex) {
         case 0:
-          return Homepage();
+          return CashirPage();
         case 1:
-          return Homepage();
+          return TableViewPage();
         case 2:
-          return Homepage();
+          return CashirPage();
         default:
-          return Homepage();
+          return CashirPage();
       }
     }
 

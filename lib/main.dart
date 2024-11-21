@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mitrapos/component/navigation.dart';
-import 'package:mitrapos/view/HomePage/HomePage.dart';
+import 'package:mitrapos/view/cashier/cashierPage.dart';
 
 void main() {
   runApp(const MyApp());
