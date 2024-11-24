@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mitrapos/view/TableView/tableViewPage.dart';
 import 'package:mitrapos/view/cashier/cashierPage.dart';
 import '../shared/theme.dart';
+import '../view/demo/meja_screen.dart';
+import '../view/demo/update_meja_screen.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -105,9 +107,9 @@ class _MainPageState extends State<MainPage> {
         case 0:
           return CashirPage();
         case 1:
-          return TableViewPage();
+          return FixedMejaScreen();
         case 2:
-          return CashirPage();
+          return UpdateMejaScreen();
         default:
           return CashirPage();
       }
