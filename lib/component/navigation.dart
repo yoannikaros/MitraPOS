@@ -107,7 +107,7 @@ class _MainPageState extends State<MainPage> {
         case 0:
           return CashirPage();
         case 1:
-          return FixedMejaScreen();
+          return UpdateMejaScreen();
         case 2:
           return UpdateMejaScreen();
         default:

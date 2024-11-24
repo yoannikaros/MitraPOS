@@ -1,38 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../core/sql_lite/meja/db_meja.dart';
 
-class Meja {
-  int id;
-  String nomor;
-  Offset posisi;
-
-  Meja({required this.id, required this.nomor, required this.posisi});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'nomor': nomor,
-      'posisiX': posisi.dx,
-      'posisiY': posisi.dy,
-    };
-  }
-
-  static Meja fromMap(Map<String, dynamic> map) {
-    return Meja(
-      id: map['id'],
-      nomor: map['nomor'],
-      posisi: Offset(map['posisiX'], map['posisiY']),
-    );
-  }
-
-  Meja copyWith({int? id, String? nomor, Offset? posisi}) {
-    return Meja(
-      id: id ?? this.id,
-      nomor: nomor ?? this.nomor,
-      posisi: posisi ?? this.posisi,
-    );
-  }
-}
+import '../../core/api_service/meja/meja_api_service.dart';
+import '../../core/models/meja_model/meja_models.dart';
 
 class UpdateMejaScreen extends StatefulWidget {
   @override
@@ -40,10 +9,12 @@ class UpdateMejaScreen extends StatefulWidget {
 }
 
 class _UpdateMejaScreenState extends State<UpdateMejaScreen> {
+  final ApiService apiService = ApiService();
   List<Meja> mejaList = [];
   Meja? selectedMeja;
   final double gridSize = 80.0;
   bool showGrid = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -51,30 +22,62 @@ class _UpdateMejaScreenState extends State<UpdateMejaScreen> {
     _loadMeja();
   }
 
-  Future<void> _addMeja(String nomor) async {
-    final dbHelper = DatabaseHelper();
-    final newMeja = Meja(
-      id: 0,
-      nomor: nomor,
-      posisi: Offset(100, 100),
-    );
-    final newMejaId = await dbHelper.insertMeja(newMeja.toMap());
-    setState(() {
-      mejaList.add(newMeja.copyWith(id: newMejaId));
-    });
+  Future<void> _loadMeja() async {
+    setState(() => isLoading = true);
+    try {
+      final mejaData = await apiService.getTablesByProfileId(1); // Ganti profile_id sesuai kebutuhan
+      setState(() {
+        mejaList = mejaData.map((data) => Meja.fromMap(data)).toList();
+      });
+    } catch (e) {
+      print('Gagal memuat data meja: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat data meja: $e')),
+
+      );
+    }
+    setState(() => isLoading = false);
   }
 
-  Future<void> _loadMeja() async {
-    final dbHelper = DatabaseHelper();
-    final mejaData = await dbHelper.getAllMeja();
-    setState(() {
-      mejaList = mejaData.map((data) => Meja.fromMap(data)).toList();
-    });
+  Future<void> _addMeja(String nomor) async {
+    setState(() => isLoading = true);
+    try {
+      final newMejaData = {
+        "profile_id": 1, // Ganti dengan profile_id sesuai kebutuhan
+        "no_table": nomor,
+        "posisiX": 100.0,
+        "posisiY": 100.0,
+        "status": "available",
+      };
+      final newMeja = await apiService.createTable(newMejaData);
+      setState(() {
+        mejaList.add(Meja.fromMap(newMeja));
+      });
+    } catch (e) {
+      print('Gagal memuat data meja: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal menambahkan meja: $e')),
+      );
+    }
+    setState(() => isLoading = false);
   }
 
   Future<void> _updateMejaPosition(Meja meja) async {
-    final dbHelper = DatabaseHelper();
-    await dbHelper.updateMeja(meja.id, meja.toMap());
+    try {
+      final updatedData = {
+        "profile_id": meja.profileId,
+        "no_table": meja.noTable,
+        "posisiX": meja.posisi.dx,
+        "posisiY": meja.posisi.dy,
+        "status": meja.status,
+      };
+      await apiService.updateTable(meja.idTable, updatedData);
+    } catch (e) {
+      print('Gagal memuat data meja: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memperbarui posisi meja: $e')),
+      );
+    }
   }
 
   Offset _snapToGrid(Offset offset) {
@@ -131,16 +134,22 @@ class _UpdateMejaScreenState extends State<UpdateMejaScreen> {
     if (selectedMeja != null) {
       setState(() {
         final snappedPosition = _snapToGrid(tapPosition);
-        selectedMeja = selectedMeja!.copyWith(posisi: snappedPosition);
-        _updateMejaPosition(selectedMeja!);
-        _loadMeja();
-      });
 
-      setState(() {
-        selectedMeja = null;
+        // Update posisi meja yang dipilih
+        selectedMeja = selectedMeja!.copyWith(posisi: snappedPosition);
+
+        // Sinkronisasi mejaList
+        int index = mejaList.indexWhere((meja) => meja.idTable == selectedMeja!.idTable);
+        if (index != -1) {
+          mejaList[index] = selectedMeja!;
+        }
+
+        // Simpan posisi baru ke API
+        _updateMejaPosition(selectedMeja!);
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -158,62 +167,75 @@ class _UpdateMejaScreenState extends State<UpdateMejaScreen> {
         onPressed: () => _showAddMejaDialog(),
         child: Icon(Icons.add),
       ),
-      body: GestureDetector(
-        onTapDown: (details) {
-          _onGridTap(details.localPosition);
-        },
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: MediaQuery.of(context).size.width,
-                minHeight: MediaQuery.of(context).size.height,
-                maxWidth: 2000, // Atur ukuran maksimal area scroll
-                maxHeight: 2000,
-              ),
-              child: Stack(
-                children: [
-                  if (showGrid)
-                    CustomPaint(
-                      size: Size.infinite,
-                      painter: GridPainter(gridSize: gridSize),
+      body: Stack(
+        children: [
+          if (isLoading) Center(child: CircularProgressIndicator()),
+          if (!isLoading)
+            GestureDetector(
+              onTapDown: (details) {
+                // Pastikan meja hanya bisa dipindahkan jika sudah dipilih
+                _onGridTap(details.localPosition);
+              },
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width,
+                      minHeight: MediaQuery.of(context).size.height,
+                      maxWidth: 2000,
+                      maxHeight: 2000,
                     ),
-                  ...mejaList.map((meja) {
-                    return Positioned(
-                      left: meja.posisi.dx,
-                      top: meja.posisi.dy,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedMeja = meja;
-                          });
-                        },
-                        child: Container(
-                          width: gridSize,
-                          height: gridSize,
-                          decoration: BoxDecoration(
-                            color: selectedMeja == meja
-                                ? Colors.orange
-                                : Colors.blue,
-                            borderRadius: BorderRadius.circular(8),
+                    child: Stack(
+                      children: [
+                        if (showGrid)
+                          CustomPaint(
+                            size: Size.infinite,
+                            painter: GridPainter(gridSize: gridSize),
                           ),
-                          child: Center(
-                            child: Text(
-                              meja.nomor,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ],
+                        ...mejaList.map((meja) {
+                          return Positioned(
+                            left: meja.posisi.dx,
+                            top: meja.posisi.dy,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  // Pilih meja jika belum dipilih
+                                  if (selectedMeja == meja) {
+                                    // Jika meja sudah dipilih, hilangkan seleksi
+                                    selectedMeja = null;
+                                  } else {
+                                    // Pilih meja saat ini
+                                    selectedMeja = meja;
+                                  }
+                                });
+                              },
+                              child: Container(
+                                width: gridSize,
+                                height: gridSize,
+                                decoration: BoxDecoration(
+                                  color: selectedMeja == meja ? Colors.orange : Colors.blue,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    meja.noTable,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            )
+
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+        ],
       ),
     );
   }
