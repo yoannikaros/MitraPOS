@@ -10,7 +10,8 @@ class TbViewPage extends StatefulWidget {
 class _TbViewPageState extends State<TbViewPage> {
   final ApiService apiService = ApiService();
   List<Meja> mejaList = [];
-  Set<String> selectedMejaIds = {}; // Menyimpan ID meja yang dipilih
+  Set<int> selectedMejaIds =
+      {}; // Menyimpan ID meja yang dipilih sebagai integer
   final double gridSize = 80.0;
   bool showGrid = false;
   bool isLoading = false;
@@ -44,12 +45,12 @@ class _TbViewPageState extends State<TbViewPage> {
     });
   }
 
-  void _toggleMejaSelection(String mejaId) {
+  void _toggleMejaSelection(int mejaId) {
     setState(() {
       if (selectedMejaIds.contains(mejaId)) {
-        selectedMejaIds.remove(mejaId); // Hapus jika sudah dipilih
+        selectedMejaIds.remove(mejaId);
       } else {
-        selectedMejaIds.add(mejaId); // Tambah jika belum dipilih
+        selectedMejaIds.add(mejaId);
       }
     });
   }
@@ -57,24 +58,14 @@ class _TbViewPageState extends State<TbViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.1),
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Row(
           children: [
             Text(
-              'Table View: ',
+              'Table View',
               style: TextStyle(color: Colors.black),
-            ),
-            Flexible(
-              child: Text(
-                selectedMejaIds.isNotEmpty
-                    ? selectedMejaIds.join(', ')
-                    : 'Tidak ada meja yang dipilih',
-                style: TextStyle(
-                  color: selectedMejaIds.isNotEmpty ? Colors.blue : Colors.grey,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
             ),
           ],
         ),
@@ -83,7 +74,111 @@ class _TbViewPageState extends State<TbViewPage> {
             icon: Icon(showGrid ? Icons.grid_off : Icons.grid_on),
             onPressed: _toggleGrid,
           ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: (){
+              Navigator.pushNamed(context, '/update-meja');
+            },
+          ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: GestureDetector(
+          onTap: () {
+            // Tambahkan aksi di sini
+          },
+          child: Container(
+            height: 70,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: Row(
+              children: [
+                // Bagian kiri untuk informasi meja
+
+                Icon(
+                  Icons.table_bar,
+                  color: Colors.blueAccent,
+                  size: 25,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'Table',
+                  style: TextStyle(
+                      color: selectedMejaIds.isNotEmpty ? Colors.blue : Colors.grey,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+
+                SizedBox(
+                  width: 20,
+                ),
+
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Flexible(
+                    child: Text(
+                      selectedMejaIds.isNotEmpty
+                          ? selectedMejaIds
+                              .map((id) => mejaList
+                                  .firstWhere((meja) => meja.idTable == id)
+                                  .noTable)
+                              .join(', ')
+                          : 'Tidak ada meja yang dipilih',
+                      style: TextStyle(
+                          color: selectedMejaIds.isNotEmpty
+                              ? Colors.blue
+                              : Colors.grey,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+
+                Spacer(),
+                // Tombol di sebelah kanan
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blueAccent.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
+              ],
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: Offset(0, 5),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       body: Stack(
         children: [
@@ -108,8 +203,12 @@ class _TbViewPageState extends State<TbViewPage> {
                           painter: GridPainter(gridSize: gridSize),
                         ),
                       ...mejaList.map((meja) {
-                        final isSelected = selectedMejaIds.contains(meja.idTable.toString());
-                        final isBooked = meja.status == 'booked'; // Periksa status meja
+                        final isBooked =
+                            meja.status == 'booked'; // Periksa status meja
+
+                        final isSelected =
+                            selectedMejaIds.contains(meja.idTable);
+                        print('Meja ${meja.idTable} isSelected: $isSelected');
 
                         return Positioned(
                           left: meja.posisi.dx,
@@ -123,22 +222,31 @@ class _TbViewPageState extends State<TbViewPage> {
                                   builder: (context) {
                                     return AlertDialog(
                                       title: Text('Konfirmasi'),
-                                      content: Text('Apakah meja ini sudah selesai?'),
+                                      content: Text(
+                                          'Apakah meja ini sudah selesai?'),
                                       actions: [
                                         TextButton(
-                                          onPressed: () => Navigator.of(context).pop(), // Tutup dialog
+                                          onPressed: () => Navigator.of(context)
+                                              .pop(), // Tutup dialog
                                           child: Text('Batal'),
                                         ),
                                         TextButton(
                                           onPressed: () async {
-                                            Navigator.of(context).pop(); // Tutup dialog sebelum memproses
+                                            Navigator.of(context)
+                                                .pop(); // Tutup dialog sebelum memproses
                                             try {
                                               // Panggil fungsi API untuk memperbarui status meja
-                                              await apiService.updateTableStatus(meja.idTable, 'available');
+                                              await apiService
+                                                  .updateTableStatus(
+                                                      meja.idTable,
+                                                      'available');
                                               _loadMeja(); // Refresh data meja
                                             } catch (e) {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(content: Text('Gagal memperbarui status meja: $e')),
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'Gagal memperbarui status meja: $e')),
                                               );
                                             }
                                           },
@@ -150,7 +258,7 @@ class _TbViewPageState extends State<TbViewPage> {
                                 );
                               } else {
                                 // Pilih/melepas pilihan jika meja tidak "booked"
-                                _toggleMejaSelection(meja.idTable.toString());
+                                _toggleMejaSelection(meja.idTable);
                               }
                             },
                             child: Container(
@@ -158,11 +266,19 @@ class _TbViewPageState extends State<TbViewPage> {
                               height: gridSize,
                               decoration: BoxDecoration(
                                 color: isBooked
-                                    ? Colors.yellow // Warna kuning untuk meja "booked"
-                                    : Colors.blue,   // Warna biru untuk meja lainnya
+                                    ? Colors
+                                        .yellow // Warna untuk meja yang sudah dipesan
+                                    : isSelected
+                                        ? Colors
+                                            .green // Warna untuk meja yang dipilih
+                                        : Colors
+                                            .blue, // Warna default untuk meja lainnya
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: isSelected ? Colors.red : Colors.white,
+                                  color: isSelected
+                                      ? Colors.red
+                                      : Colors
+                                          .white, // Border untuk meja yang dipilih
                                   width: 2,
                                 ),
                               ),
@@ -176,9 +292,6 @@ class _TbViewPageState extends State<TbViewPage> {
                           ),
                         );
                       }).toList(),
-
-
-
                     ],
                   ),
                 ),

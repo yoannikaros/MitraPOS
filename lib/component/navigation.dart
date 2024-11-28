@@ -34,11 +34,7 @@ class _MainPageState extends State<MainPage> {
                 width: 50,
                 child:               // Item navigasi
                 IconButton(
-                  icon: Image.asset(
-                    'aset/icon_home.png',
-                    width: 25,
-                    color: currentIndex == 0 ? Colors.white : Color(0xff808191),
-                  ),
+                  icon: Icon(Icons.point_of_sale, color: currentIndex == 0 ? Colors.white : Colors.grey, size: 29,),
                   onPressed: () {
                     setState(() {
                       currentIndex = 0;
@@ -58,7 +54,7 @@ class _MainPageState extends State<MainPage> {
                 width: 50,
                 child:               // Item navigasi
                 IconButton(
-                  icon: Icon(Icons.account_balance_wallet_sharp, color: currentIndex == 1 ? Colors.white : Colors.grey, size: 29,),
+                  icon: Icon(Icons.document_scanner, color: currentIndex == 1 ? Colors.white : Colors.grey, size: 29,),
                   onPressed: () {
                     setState(() {
                       currentIndex = 1;
@@ -78,11 +74,7 @@ class _MainPageState extends State<MainPage> {
                 width: 50,
                 child:               // Item navigasi
                 IconButton(
-                  icon: Image.asset(
-                    'aset/icon_profile.png',
-                    width: 25,
-                    color: currentIndex == 2 ? Colors.white : Color(0xff808191),
-                  ),
+                  icon: Icon(Icons.playlist_add_check_circle_rounded, color: currentIndex == 2 ? Colors.white : Colors.grey, size: 29,),
                   onPressed: () {
                     setState(() {
                       currentIndex = 2;
@@ -109,7 +101,7 @@ class _MainPageState extends State<MainPage> {
         case 1:
           return TbViewPage();
         case 2:
-          return UpdateMejaScreen();
+          return CashirPage();
         default:
           return CashirPage();
       }

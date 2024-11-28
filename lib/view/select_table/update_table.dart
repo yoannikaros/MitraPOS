@@ -163,6 +163,7 @@ class _UpdateMejaScreenState extends State<UpdateMejaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.1),
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Row(

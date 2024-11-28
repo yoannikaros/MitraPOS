@@ -93,11 +93,13 @@ class _CashirPageState extends State<CashirPage> {
             crossAxisCount: 4, // Jumlah kolom dalam grid
             crossAxisSpacing: 5, // Jarak horizontal antar item
             mainAxisSpacing: 2, // Jarak vertikal antar item
-            childAspectRatio:
-                0.90, // Lebar dan tinggi (lebih tinggi dari sebelumnya)
+            childAspectRatio: 1, // Lebar dan tinggi (lebih tinggi dari sebelumnya)
           ),
-          itemCount: 1, // Jumlah item total (sesuaikan dengan data Anda)
+          itemCount: 10, // Jumlah item total (sesuaikan dengan data Anda)
           itemBuilder: (context, index) {
+            // Mendapatkan lebar layar
+            double screenWidth = MediaQuery.of(context).size.width;
+
             return Container(
               margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               decoration: BoxDecoration(
@@ -105,28 +107,41 @@ class _CashirPageState extends State<CashirPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min, // Ukuran mengikuti konten
                 children: [
                   Container(
-                    height: 140,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    child: AspectRatio(
+                      aspectRatio: 15 / 9, // Rasio lebar:tinggi (sesuaikan dengan kebutuhan Anda)
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 12),
                   Text(
                     'Nasi Goreng Ayam $index',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.012, // Ukuran font responsif
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 5),
                   Text(
                     'Rp. 5.000.000',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
-                        fontSize: 15),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                      fontSize: screenWidth * 0.012, // Ukuran font responsif
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -137,7 +152,10 @@ class _CashirPageState extends State<CashirPage> {
       );
     }
 
+
+
     Widget Cart() {
+      double screenWidth = MediaQuery.of(context).size.width;
       return Container(
         padding: EdgeInsets.all(10), // Menambahkan padding agar lebih rapi
         child: Row(
@@ -145,8 +163,8 @@ class _CashirPageState extends State<CashirPage> {
               CrossAxisAlignment.start, // Agar item di-align dengan benar
           children: [
             Container(
-              height: 55,
-              width: 55,
+              height: 53,
+              width: 53,
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -160,47 +178,33 @@ class _CashirPageState extends State<CashirPage> {
                 children: [
                   Text(
                     'Nasi Goreng Ayam Telor ',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '12x',
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.normal,color: Colors.grey),
+                    style: TextStyle(fontSize: screenWidth * 0.01, fontWeight: FontWeight.bold),
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment
-                        .start, // Menyelaraskan elemen ke atas
                     children: [
-                      // Deskripsi
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          'Pedas Manis',
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.normal,color: Colors.grey),
-                          maxLines: 2, // Membatasi hingga 2 baris
-                          overflow: TextOverflow
-                              .ellipsis, // Memotong jika terlalu panjang
-                        ),
+                      Text(
+                        '12x',
+                        style:
+                            TextStyle(fontSize: screenWidth * 0.01, fontWeight: FontWeight.normal,color: Colors.grey),
                       ),
-                      SizedBox(
-                          width:
-                              10), // Memberikan jarak antara deskripsi dan harga
-                      // Harga
-                      Container(
-                        width: 100, // Ukuran tetap untuk harga
-                        alignment:
-                            Alignment.centerRight, // Sejajarkan teks ke kanan
-                        child: Text(
-                          '15.000.000',
-                          textAlign: TextAlign.right, // Agar teks sejajar kanan
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blueAccent),
-                        ),
+                      SizedBox(width: 10,),
+
+                      Text(
+                        'Pedas Manis',
+                        style: TextStyle(
+                            fontSize: screenWidth * 0.01, fontWeight: FontWeight.normal,color: Colors.grey),
+                        maxLines: 2, // Membatasi hingga 2 baris
+                        overflow: TextOverflow
+                            .ellipsis, // Memotong jika terlalu panjang
                       ),
                     ],
+                  ),
+                  Text(
+                    '15.000.000',
+                    style: TextStyle(
+                        fontSize: screenWidth * 0.01,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent),
                   ),
                 ],
               ),
@@ -211,8 +215,9 @@ class _CashirPageState extends State<CashirPage> {
     }
 
     Widget totalCart() {
+      double screenWidth = MediaQuery.of(context).size.width;
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 20),
+        margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
         width: double.infinity,
         padding: EdgeInsets.all(15),
         child: Column(
@@ -220,7 +225,7 @@ class _CashirPageState extends State<CashirPage> {
           children: [
             Text(
               'Payment Summary',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.013),
             ),
             SizedBox(
               height: 15,
@@ -229,12 +234,12 @@ class _CashirPageState extends State<CashirPage> {
               children: [
                 Text(
                   'Subtotal',
-                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: screenWidth * 0.013),
                 ),
                 Spacer(),
                 Text(
                   'Rp. 200.000',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.013),
                 )
               ],
             ),
@@ -245,12 +250,12 @@ class _CashirPageState extends State<CashirPage> {
               children: [
                 Text(
                   'Tax',
-                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: screenWidth * 0.013),
                 ),
                 Spacer(),
                 Text(
                   '0',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.013),
                 )
               ],
             ),
@@ -261,10 +266,16 @@ class _CashirPageState extends State<CashirPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(20, (index) {
                 return index % 2 == 0
-                    ? Container(width: 18, height: 1, color: Colors.black.withOpacity(0.2))
+                    ? Expanded(
+                  child: Container(
+                    height: 1,
+                    color: Colors.black.withOpacity(0.2),
+                  ),
+                )
                     : SizedBox(width: 3);
               }),
             ),
+
             SizedBox(
               height: 10,
             ),
@@ -272,12 +283,12 @@ class _CashirPageState extends State<CashirPage> {
               children: [
                 Text(
                   'Total',
-                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey, fontSize: screenWidth * 0.013),
                 ),
                 Spacer(),
                 Text(
                   'Rp. 200.000',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.013),
                 )
               ],
             ),
