@@ -25,8 +25,7 @@ class _UpdateMejaScreenState extends State<UpdateMejaScreen> {
   Future<void> _loadMeja() async {
     setState(() => isLoading = true);
     try {
-      final mejaData = await apiService
-          .getTablesByProfileId(1); // Ganti profile_id sesuai kebutuhan
+      final mejaData = await apiService.getTablesByProfileId(1); // Ganti profile_id sesuai kebutuhan
       setState(() {
         mejaList = mejaData.map((data) => Meja.fromMap(data)).toList();
       });
@@ -168,7 +167,7 @@ class _UpdateMejaScreenState extends State<UpdateMejaScreen> {
         backgroundColor: Colors.white,
         title: Row(
           children: [
-            Text('Table View'),
+            Text('Update Table'),
             SizedBox(
               width: 10,
             ),

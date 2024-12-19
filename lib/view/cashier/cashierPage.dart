@@ -343,11 +343,6 @@ class _CashirPageState extends State<CashirPage> {
                                 children: [
                                   Cart(),
                                   Cart(),
-                                  Cart(),
-                                  Cart(),                                  Cart(),
-                                  Cart(),
-                                  Cart(),
-                                  Cart(),
                                 ],
                               ), // Konten Cart bisa di-scroll jika melebihi batas
                             ),
